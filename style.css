@@ -73,6 +73,7 @@ button{
     display:flex;
     justify-content: center;
     gap: 20px;
+    margin-bottom: 0;
 }
 
 .blank{
@@ -86,6 +87,8 @@ button{
     border-radius: 30px;
     height: 70px;
     width:180px;
+    font-family: 'Dosis';
+    font-size: 17px;
 }
 
 
@@ -96,8 +99,18 @@ button{
 
 .reset{
     align-self: center;
+    font-family: 'Dosis';
+    font-size: 16px;
 }
 
+.computerAnswer{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: 24px;
+    max-height: 300px;
+}
 .choose-rock:focus{
     background-color: #60435F;
     transition: all  0.2s linear;
@@ -116,10 +129,6 @@ button{
     transform: scale(1.1);
 }
 
-.js-computerAnswer{
-    transition: all 1s ease;
-}
-
 .js-rock{
 display: none;
 transition: width 2s;
@@ -136,3 +145,4 @@ display: none;
 .move-played{
     display:block;
 }
+
