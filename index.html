@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+ <link rel="stylesheet" href="style.css">
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dosis">
+</head>
+<body>
+    <div class="title-score">
+        <div class="title">ROCK, PAPER, SCISSORS</div>
+          
+    </div>
+
+    <div class="games-number"> 
+        <label for="bestOf">No. of Games</label>
+            <select name="bestOf" id="gamesBO">
+                <option value=1>BO1</option>
+                <option value=3>BO3</option>
+                <option value=5>BO5</option>
+                <option value=7>BO7</option>
+            </select>
+    </div>
+
+    <div class="choice-buttons">
+        <button onclick="
+            userMove='Rock';
+            " class="choose-rock"> <img src="rock.png"  alt="rock"></button>
+        <button  onclick="
+        userMove='Paper';
+        " class="choose-paper"> <img src="paper.png" alt="paper"></button>
+        <button onclick="
+            userMove='Scissors'
+        " class="choose-scissors"> <img src="scissor.png" alt="scissors"></button>
+    </div>
+
+    <div class="play-reset">
+        <div class="blank"> </div>
+        <button onclick="
+            startGame();
+        " class="play-button"><img class="play-img" src="play.png">Play your move</button>
+        
+        <button onclick="
+        resetScore();
+        " class="reset">Reset</button>
+    </div>
+    
+    <div class='computerAnswer'> 
+        <p class="js-computerAnswer"></p>
+        <div class="computerImageAnswer">
+            <img src="rock.png"  class="js-rock">
+            <img src="paper.png" class="js-paper">
+            <img src="scissor.png" class="js-scissors">
+        </div>
+    </div>
+    <p class="js-result"> </p>
+    <p class="js-series-result"> </p>
+</body>
+<script>
+    let userMove='';
+    let score=  JSON.parse(localStorage.getItem('score')) || {
+        wins:0,
+        losses:0,
+        ties:0,
+        seriesWins:0,
+        seriesLosses:0,
+    };
+   
+    
+    function pickComputerAnswer(){
+        const randomNum = Math.random();
+        let computerAnswer='';
+        
+        if (randomNum >= 0 && randomNum < 1/3){
+        computerAnswer='Rock';
+        }
+        
+        else if (randomNum >= 1/3 && randomNum < 2/3){
+            computerAnswer='Paper';
+        }
+
+        else if (randomNum >= 2/3 && randomNum <= 1){
+            computerAnswer='Scissors';
+        }
+
+        return computerAnswer;
+    }
+
+    const computerRock=document.querySelector('.js-rock');
+    const computerPaper=document.querySelector('.js-paper');
+    const computerScissors=document.querySelector('.js-scissors');
+    function showComputerAnswer(movePlayed){
+        if (movePlayed==='Rock') {
+            computerRock.classList.add('move-played');
+            computerPaper.classList.remove('move-played');
+            computerScissors.classList.remove('move-played');
+        }
+        else if(movePlayed==='Paper'){
+            computerRock.classList.remove('move-played');
+            computerPaper.classList.add('move-played');
+            computerScissors.classList.remove('move-played');
+        }
+        else if(movePlayed==='Scissors'){
+            computerRock.classList.remove('move-played');
+            computerPaper.classList.remove('move-played');
+            computerScissors.classList.add('move-played');
+        }
+    }
+    
+    const choiceText=document.createElement('p');
+    const selectNumOfGames=document.getElementById('gamesBO');
+    let NumOfGames=1;
+
+    selectNumOfGames.addEventListener('change', selectBO => {
+        NumOfGames=selectBO.target.value;
+        resetScore();
+        if (NumOfGames>1) {
+            if (!seriesScoreline.classList.contains('js-series-scoreline')) addSeriesScoreline();
+            seriesScoreline.classList.add('js-series-scoreline');
+            document.querySelector('.js-series-scoreline').textContent=`Series: ${score.seriesWins}-${score.seriesLosses}`
+        }
+        else {
+            seriesScoreline.classList.remove('js-series-scoreline');
+            titleDiv.removeChild(seriesScoreline);
+            document.querySelector('.js-series-result').textContent='';
+        }
+    })
+
+    function startGame(){
+        document.querySelector('.js-series-result').textContent='';
+        const computerAnswer=pickComputerAnswer();
+        if (userMove!=='') showComputerAnswer(computerAnswer);
+        if (userMove=== 'Rock') {
+            if (computerAnswer==="Rock") result='Tie';
+            else if (computerAnswer==="Paper") result='You lose';
+            else if (computerAnswer==="Scissors") result='You win';
+           document.querySelector('.choose-rock').focus();
+           
+        }
+        else if (userMove=== 'Paper'){
+            if (computerAnswer==="Rock") result='You win';
+            else if (computerAnswer==="Paper") result='Tie';
+            else if (computerAnswer==="Scissors") result='You lose';
+            document.querySelector('.choose-paper').focus();
+        }
+        else if (userMove==='Scissors'){
+            if (computerAnswer==="Rock") result='You lose';
+            else if (computerAnswer==="Paper") result='You win';
+            else if (computerAnswer==="Scissors") result='Tie';
+            document.querySelector('.choose-scissors').focus();
+        }
+        
+        if (result==='You win') score.wins ++;
+        else if(result==='You lose')  score.losses ++ ;
+        else if(result==='Tie')  score.ties ++;
+        
+        chooseSeriesResult(NumOfGames);
+        console.log(score.seriesWins);
+        console.log(score.seriesLosses);
+
+        if (!choiceText.classList.contains('.choseText') && userMove!=='') {
+            addComputerChoice();
+            choiceText.textContent='Computer chose:';
+            document.querySelector('.js-result')
+            .textContent=`Result: ${result}`;
+            
+        }
+       
+        
+        localStorage.setItem('score',JSON.stringify(score));
+        updateScorelineText();
+        
+    }
+    
+   
+    function addComputerChoice() {
+        const compChose=document.querySelector('.computerAnswer');
+        const choiceImage=document.querySelector('.computerImageAnswer')
+        compChose.insertBefore(choiceText,choiceImage);
+        choiceText.classList.add('choseText') ;
+        }
+    
+    const seriesScoreline=document.createElement('div')
+    function addSeriesScoreline(){
+        seriesScoreline.classList.add('js-series-scoreline');
+        const titleDiv=document.querySelector('.title-score');
+        titleDiv.appendChild(seriesScoreline);
+    }
+    function seriesEnd() {
+        score.wins=0;
+        score.losses=0;
+        score.ties=0;
+        document.querySelector('.js-series-scoreline').textContent=`Series: ${score.seriesWins}-${score.seriesLosses}`
+        
+    }
+
+    function chooseSeriesResult(Num){
+        if (Num>1) {
+            if (score.wins==Num) {
+                score.seriesWins ++;
+                seriesEnd();
+                document.querySelector('.js-series-result').textContent='Series End: YOU WON'
+            }
+
+            else if (score.losses==Num) {
+                score.seriesLosses ++;
+                seriesEnd();
+                document.querySelector('.js-series-result').textContent='Series End: YOU LOST'
+            }
+        }
+        
+    }   
+
+    function resetScore(){
+        score={
+            wins:0,
+            losses:0,
+            ties:0,
+            seriesWins:0,
+            seriesLosses:0,
+        }
+        localStorage.removeItem('score');
+        userMove='';
+        result='';
+        document.querySelector('.js-result')
+            .innerHTML=' ';
+        
+        computerRock.classList.remove('move-played');
+        computerPaper.classList.remove('move-played');
+        computerScissors.classList.remove('move-played');
+        choiceText.remove();
+        updateScorelineText();
+    }
+
+   
+    const scoreLine=document.createElement('div');
+    const titleDiv=document.querySelector('.title-score');
+    function addScorelineDiv() {
+        scoreLine.classList.add('js-scoreline');
+        
+        titleDiv.appendChild(scoreLine);
+        
+    
+    }
+    
+    function updateScorelineText(){
+        if (!scoreLine.classList.contains('js-scoreline')) addScorelineDiv();
+        scoreLine.textContent=`Wins: ${score.wins} Losses: ${score.losses} Ties: ${score.ties}` ;
+    }
+
+
+    
+</script>

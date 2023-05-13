@@ -1,0 +1,138 @@
+html, body{
+    background-color: #DDEDAA ;
+    padding:0;
+    margin: 0;
+    font-family: 'Dosis';
+}
+
+img {
+    width:100px;
+}
+
+button{
+    background-color: azure;
+}
+
+.title-score{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title{
+    font-weight:bolder;
+    font-size:60px;
+}
+
+.js-scoreline{
+    font-size:24px;
+    background-color: #dfdcdc;
+    padding: 20px;
+    border-radius: 20px;
+    width:220px;
+}
+
+.js-series-scoreline{
+    font-size:24px;
+    background-color: #fad21e;
+    padding: 20px;
+    border-radius: 20px;
+    width:220px;
+    text-align: center;
+    
+}
+
+.games-number{
+    background-color: #05a7f8;
+    text-align: center;
+    align-items: center;
+    padding:8px;
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+#gamesBO{
+    font-family: 'Dosis';
+    font-size: 20px;
+   
+}
+
+.choice-buttons{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    gap:20px;
+    background-color: #05a7f8;
+    padding-top:15px;
+    padding-bottom:30px;
+    margin-bottom: 10px;
+
+}
+
+.play-reset{
+    display:flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.blank{
+    width:50px;
+}
+.play-button{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    gap:8px;
+    border-radius: 30px;
+    height: 70px;
+    width:180px;
+}
+
+
+
+.play-img{
+    width:50px;
+}
+
+.reset{
+    align-self: center;
+}
+
+.choose-rock:focus{
+    background-color: #60435F;
+    transition: all  0.2s linear;
+    transform: scale(1.1);
+}
+
+.choose-paper:focus{
+    background-color: #E2A3C7;
+    transition: all  0.2s linear;
+    transform: scale(1.1);
+}
+
+.choose-scissors:focus{
+    background-color: #D67AB1;
+    transition: all  0.2s linear;
+    transform: scale(1.1);
+}
+
+.js-computerAnswer{
+    transition: all 1s ease;
+}
+
+.js-rock{
+display: none;
+transition: width 2s;
+}
+
+.js-paper{
+display: none;
+}
+
+.js-scissors{
+display: none;
+}
+
+.move-played{
+    display:block;
+}
